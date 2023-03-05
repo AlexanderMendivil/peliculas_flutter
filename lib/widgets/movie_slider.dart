@@ -108,7 +108,7 @@ const _MovieItem({super.key, required this.movie});
         child: Column(
           children: <Widget>[
             GestureDetector(
-              onTap: () =>  Navigator.pushNamed(context, 'detail', arguments: 'movie-instance'),
+              onTap: () =>  Navigator.pushNamed(context, 'detail', arguments: movie),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child:  FadeInImage(
@@ -121,8 +121,8 @@ const _MovieItem({super.key, required this.movie});
               ),
             ),
               const SizedBox(height: 5,),
-              const Text(
-              'Star wars: el retorno del nuevo Jedi silvestre de monte cristo',
+              Text(
+              movie.title,
                maxLines: 2,
                overflow: TextOverflow.ellipsis,
                textAlign: TextAlign.center,
