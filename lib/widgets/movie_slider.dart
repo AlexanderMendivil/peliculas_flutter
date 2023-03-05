@@ -5,10 +5,19 @@ class MovieSlider extends StatelessWidget {
   final List<Movie> movies;
   final String? title;
   const MovieSlider({super.key, required this.movies, this.title});
-
+  
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final size = MediaQuery.of(context).size;
+
+    if(movies.isEmpty){
+      return SizedBox(
+        width: size.width * 0.5,
+        height: size.height * 0.1,
+      );
+    }
+
+    return SizedBox(
       width: double.infinity,
       height: 280,
       child: Column(
