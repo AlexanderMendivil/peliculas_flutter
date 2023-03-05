@@ -4,7 +4,8 @@ import 'package:peliculas/models/movie.dart';
 class MovieSlider extends StatelessWidget {
   final List<Movie> movies;
   final String? title;
-  const MovieSlider({super.key, required this.movies, this.title});
+  final Function onNextPage;
+  const MovieSlider({super.key, required this.movies, this.title, required this.onNextPage});
   
   @override
   Widget build(BuildContext context) {
@@ -34,22 +35,46 @@ class MovieSlider extends StatelessWidget {
                 fontWeight: FontWeight.bold 
                 ),)),
           
-          _MoviePoster(movies: movies)
+          _MoviePoster(movies: movies, onNextPage: ()=> onNextPage(),)
         ]
       ),
     );
   }
 }
 
-class _MoviePoster extends StatelessWidget {
+class _MoviePoster extends StatefulWidget {
   final List<Movie> movies;
-const _MoviePoster({required this.movies});
+  final Function onNextPage;
+const _MoviePoster({required this.movies, required this.onNextPage});
+
+  @override
+  State<_MoviePoster> createState() => _MoviePosterState();
+
+}
+
+class _MoviePosterState extends State<_MoviePoster> {
+
+  final ScrollController scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+        if(scrollController.position.pixels >= scrollController.position.maxScrollExtent - 500){
+          widget.onNextPage();
+        } 
+     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
 
 final size = MediaQuery.of(context).size;
 
-    if( movies.isEmpty ){
+    if( widget.movies.isEmpty ){
       return SizedBox(
         width: double.infinity,
         height: size.height * 0.5,
@@ -60,10 +85,11 @@ final size = MediaQuery.of(context).size;
     }
     return Expanded(
             child: ListView.builder(
+              controller: scrollController,
               scrollDirection: Axis.horizontal,
-              itemCount: movies.length,
+              itemCount: widget.movies.length,
               itemBuilder: ((_, int index) {
-                 final movie = movies[index];
+                 final movie = widget.movies[index];
 
                 return  _MovieItem(movie: movie ); } )),
           );
