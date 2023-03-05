@@ -12,6 +12,8 @@ final String _baseUrl = 'api.themoviedb.org';
 final String _language = 'es-ES';
 List<Movie> onDisplayMovies = [];
 List<Movie> popularMovies  = [];
+Map<int, List<Cast>> movieCast = {};
+
 int _popularPage = 0;
 
   MoviesProviders(){
@@ -44,5 +46,19 @@ int _popularPage = 0;
     final res = nowPlayingResponseFromJson(jsonData);
     onDisplayMovies = res.results;
     notifyListeners();
+  }
+
+  Future<List<Cast>> getMovieCast(int movieId) async {
+    
+    if(movieCast.containsKey(movieId)){
+      return movieCast[movieId]!;
+    }
+
+    final jsonData = await _getJsonData('3/movie/$movieId/credits');
+    final creditResponse = creditResponseFromJson(jsonData);
+
+    movieCast[movieId] = creditResponse.cast;
+
+    return creditResponse.cast;
   }
 }
