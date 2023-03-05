@@ -4,7 +4,7 @@ class Movie {
         this.backdropPath,
         required this.genreIds,
         required this.id,
-        required this.originalLanguage,
+        this.originalLanguage,
         required this.originalTitle,
         required this.overview,
         required this.popularity,
@@ -20,7 +20,7 @@ class Movie {
     String? backdropPath;
     List<int> genreIds;
     int id;
-    OriginalLanguage originalLanguage;
+    OriginalLanguage? originalLanguage;
     String originalTitle;
     String overview;
     double popularity;
@@ -43,7 +43,7 @@ class Movie {
         backdropPath: json["backdrop_path"],
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
-        originalLanguage: originalLanguageValues.map[json["original_language"]]!,
+        originalLanguage: originalLanguageValues.map[json["original_language"]],
         originalTitle: json["original_title"],
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
