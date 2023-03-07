@@ -3,6 +3,8 @@ import 'package:peliculas/models/models.dart';
 import 'package:peliculas/widgets/widgets.dart';
 
 class DetailsScreen extends StatelessWidget {
+  const DetailsScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class DetailsScreen extends StatelessWidget {
         slivers: [
           _CustomAppBar(title: movie.title, image: movie.fullBackdropPath,),
           SliverList(delegate: SliverChildListDelegate([
-          _PosterAndTitle(title: movie.title, originalTitle: movie.originalTitle, image: movie.fullPosterUrl, voteAverage: movie.voteAverage,),
+          _PosterAndTitle(title: movie.title, originalTitle: movie.originalTitle, image: movie.fullPosterUrl, voteAverage: movie.voteAverage, id: movie.heroId!,),
             _Overview(overview: movie.overview,),
             CastingCards(movieId: movie.id)
           ]))
@@ -58,7 +60,8 @@ class _PosterAndTitle extends StatelessWidget {
     final String originalTitle;
     final String image;
     final double voteAverage;
-  const _PosterAndTitle({super.key, required this.title, required this.originalTitle, required this.image, required this.voteAverage});
+    final String id;
+  const _PosterAndTitle({super.key, required this.title, required this.originalTitle, required this.image, required this.voteAverage, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -70,16 +73,18 @@ class _PosterAndTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric( horizontal: 20 ),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: 
-            BorderRadius.circular( 20 ),
-            child: FadeInImage(
-              placeholder: const AssetImage('assets/no-image.jpg'),
-              image: NetworkImage(image),
-              height: 150,
-              width: 110,
-               ),
-            ),
+          Hero(
+            tag: id,
+            child: ClipRRect(
+              borderRadius: 
+              BorderRadius.circular( 20 ),
+              child: FadeInImage(
+                placeholder: const AssetImage('assets/no-image.jpg'),
+                image: NetworkImage(image),
+                height: 150,
+                 ),
+              ),
+          ),
             const SizedBox(width: 20,),
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: size.width - 170),

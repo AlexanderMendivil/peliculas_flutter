@@ -99,8 +99,10 @@ final size = MediaQuery.of(context).size;
 class _MovieItem extends StatelessWidget {
   final Movie movie;
 const _MovieItem({super.key, required this.movie});
+
   @override
   Widget build(BuildContext context) {
+  movie.heroId = 'slider-${movie.id}';
     return Container(
         width: 130,
         height: 190,
@@ -109,15 +111,18 @@ const _MovieItem({super.key, required this.movie});
           children: <Widget>[
             GestureDetector(
               onTap: () =>  Navigator.pushNamed(context, 'detail', arguments: movie),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child:  FadeInImage(
-                  placeholder: const AssetImage('assets/no-image.jpg'), 
-                  image: NetworkImage( movie.fullPosterUrl ),
-                  width: 130,
-                  height: 200,
-                  fit: BoxFit.cover,
-                  ),
+              child: Hero(
+                tag: movie.heroId!,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child:  FadeInImage(
+                    placeholder: const AssetImage('assets/no-image.jpg'), 
+                    image: NetworkImage( movie.fullPosterUrl ),
+                    width: 130,
+                    height: 200,
+                    fit: BoxFit.cover,
+                    ),
+                ),
               ),
             ),
               const SizedBox(height: 5,),
